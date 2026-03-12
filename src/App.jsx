@@ -595,16 +595,8 @@ const text =
 const parsed = JSON.parse(text);
 
 setTopics(parsed.topics || []);
-          messages: [{ role: "user", content: `Para o mês de ${getMes()}, liste exatamente 6 temas/tendências de conteúdo para uma Chef Pâtissière no Instagram brasileiro. Responda APENAS com JSON válido neste formato exato, sem texto adicional:
-{"topics":[{"tema":"nome do tema","temperatura":"quente","motivo":"por que está em alta em 1 linha"},{"tema":"nome","temperatura":"morno","motivo":"explicação"},{"tema":"nome","temperatura":"frio","motivo":"explicação"}]}
-Use temperatura: "quente", "morno" ou "frio". Retorne exatamente 6 tópicos variando as temperaturas.` }],
-        }),
-      });
-      const data = await res.json();
-      const text = data.content?.map(i => i.text || "").join("") || "{}";
-      const clean = text.replace(/```json|```/g, "").trim();
-      const parsed = JSON.parse(clean);
-      setTopics(parsed.topics || []);
+          
+      
     } catch(e) { setTopics([]); }
     setLoading(false);
   };
