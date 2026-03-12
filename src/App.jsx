@@ -739,13 +739,6 @@ const res = await fetch(
 );
 
 
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 4000,
-          system: SYSTEM_PROMPT,
-          messages: [{ role: "user", content: tab.prompt(fields) }],
-        }),
-      });
       const data = await res.json();
       const text = data.error ? `Erro: ${data.error.message}` : (data.content?.map(i => i.text || "").join("\n") || "Erro ao gerar."); setResult(text);
     } catch(e) { setResult("Erro de conexão. Tente novamente."); }
