@@ -560,18 +560,41 @@ function HotTopicsView() {
   const fetchTopics = async () => {
     setLoading(true);
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": import.meta.env.VITE_ANTHROPIC_API_KEY,
-          "anthropic-version": "2023-06-01",
-          "anthropic-dangerous-direct-browser-access": "true"
-        },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          system: SYSTEM_PROMPT_HOT,
+      const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+
+const res = await fetch(
+  `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      contents: [
+        {
+          parts: [
+            {
+              text:
+                SYSTEM_PROMPT_HOT +
+                "\n\nPara o mês de " +
+                getMes() +
+                ", liste exatamente 6 temas/tendências de conteúdo para uma Chef Pâtissière no Instagram brasileiro. Responda em JSON com tema, temperatura e motivo."
+            }
+          ]
+        }
+      ]
+    })
+  }
+);
+
+const data = await res.json();
+
+const text =
+  data.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
+
+const parsed = JSON.parse(text);
+
+setTopics(parsed.topics || []);
           messages: [{ role: "user", content: `Para o mês de ${getMes()}, liste exatamente 6 temas/tendências de conteúdo para uma Chef Pâtissière no Instagram brasileiro. Responda APENAS com JSON válido neste formato exato, sem texto adicional:
 {"topics":[{"tema":"nome do tema","temperatura":"quente","motivo":"por que está em alta em 1 linha"},{"tema":"nome","temperatura":"morno","motivo":"explicação"},{"tema":"nome","temperatura":"frio","motivo":"explicação"}]}
 Use temperatura: "quente", "morno" ou "frio". Retorne exatamente 6 tópicos variando as temperaturas.` }],
