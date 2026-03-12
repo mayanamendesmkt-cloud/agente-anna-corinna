@@ -738,14 +738,7 @@ const res = await fetch(
   }
 );
 
-const data = await res.json();
 
-const text =
-  data.candidates?.[0]?.content?.parts?.[0]?.text ||
-  "Erro ao gerar.";
-
-setResult(text);
-        }
         body: JSON.stringify({
           model: "claude-sonnet-4-20250514",
           max_tokens: 4000,
