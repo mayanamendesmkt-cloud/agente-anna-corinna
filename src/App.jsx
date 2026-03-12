@@ -597,7 +597,9 @@ const parsed = JSON.parse(text);
 setTopics(parsed.topics || []);
           
       
-    } catch(e) { setTopics([]); }
+    } catch (e) {
+  setTopics([]);
+}
     setLoading(false);
   };
 
