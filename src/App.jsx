@@ -721,13 +721,36 @@ export default function AnnaCorinnaAgentV3() {
     setLoading(true);
     setResult("");
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": import.meta.env.VITE_ANTHROPIC_API_KEY,
-          "anthropic-version": "2023-06-01",
-          "anthropic-dangerous-direct-browser-access": "true"
+     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+
+const res = await fetch(
+  `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      contents: [
+        {
+          parts: [
+            {
+              text: SYSTEM_PROMPT + "\n\n" + tab.prompt(fields)
+            }
+          ]
+        }
+      ]
+    })
+  }
+);
+
+const data = await res.json();
+
+const text =
+  data.candidates?.[0]?.content?.parts?.[0]?.text ||
+  "Erro ao gerar.";
+
+setResult(text);
         },
         body: JSON.stringify({
           model: "claude-sonnet-4-20250514",
