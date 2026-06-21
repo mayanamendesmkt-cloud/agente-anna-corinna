@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Save } from "lucide-react";
+import VideosPage from "./VideosPage";
 
 const SYSTEM_PROMPT = `
 Você é o agente exclusivo de conteúdo da Anna Corinna, Chef Pâtissière com mais de 20 anos de experiência, formada em Gastronomia com especialização em Confeitaria e Chocolateria. Professora, consultora, palestrante e apresentadora de programas gastronômicos.
